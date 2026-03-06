@@ -801,7 +801,6 @@ export const nativeMenuItems = [
             path: "/tenant/tools/tenantlookup",
             permissions: ["Tenant.Administration.*"],
           },
-
           {
             title: "IP Database",
             path: "/tenant/tools/geoiplookup",
