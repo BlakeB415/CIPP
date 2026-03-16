@@ -79,6 +79,11 @@ export const nativeMenuItems = [
             permissions: ["Identity.Role.*"],
           },
           {
+            title: "Vacation Mode",
+            path: "/identity/administration/vacation-mode",
+            permissions: ["Identity.User.*"],
+          },
+          {
             title: "Offboarding Wizard",
             path: "/identity/administration/offboarding-wizard",
             permissions: ["Identity.User.*"],
@@ -734,6 +739,11 @@ export const nativeMenuItems = [
           {
             title: "Calendar Permissions",
             path: "/email/reports/calendar-permissions",
+            permissions: ["Exchange.Mailbox.*"],
+          },
+          {
+            title: "Mailbox Forwarding",
+            path: "/email/reports/mailbox-forwarding",
             permissions: ["Exchange.Mailbox.*"],
           },
           {
