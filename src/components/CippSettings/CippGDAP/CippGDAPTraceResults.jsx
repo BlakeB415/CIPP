@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { CippIcons } from "../../../utils/icon-registry"
 import {
   Box,
   Card,
@@ -16,18 +17,9 @@ import {
   Tooltip,
   IconButton,
 } from "@mui/material";
-import {
-  ExpandMore,
-  CheckCircle,
-  Cancel,
-  Warning,
-  Security,
-  Group,
-  AccountTree,
-  InfoOutlined,
-} from "@mui/icons-material";
 import { CippCodeBlock } from "../../CippComponents/CippCodeBlock";
 import { CippPathVisualization } from "./CippPathVisualization";
+import { getCippRoleTranslation } from "../../../utils/get-cipp-role-translation";
 
 export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
   const [expandedRoles, setExpandedRoles] = useState({});
@@ -88,13 +80,13 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
 
   const getRoleStatusChip = (role) => {
     if (role.isUserHasAccess) {
-      return <Chip icon={<CheckCircle />} label="Has Access" color="success" size="small" />;
+      return <Chip icon={<CippIcons.CheckCircle />} label="Has Access" color="success" size="small" />;
     } else if (role.isAssigned) {
-      return <Chip icon={<Warning />} label="Assigned but No Access" color="warning" size="small" />;
+      return <Chip icon={<CippIcons.Warning />} label="Assigned but No Access" color="warning" size="small" />;
     } else if (role.roleExistsInRelationship) {
-      return <Chip icon={<Warning />} label="In Relationship but Not Assigned" color="info" size="small" />;
+      return <Chip icon={<CippIcons.Warning />} label="In Relationship but Not Assigned" color="info" size="small" />;
     } else {
-      return <Chip icon={<Cancel />} label="Not In Any Relationship" color="default" size="small" />;
+      return <Chip icon={<CippIcons.Cancel />} label="Not In Any Relationship" color="default" size="small" />;
     }
   };
 
@@ -114,7 +106,9 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
       <Stack spacing={1} sx={{ mt: 1 }}>
         {sortedPath.map((step, index) => (
           <Box key={step.groupId || index}>
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack direction="row" spacing={1} sx={{
+              alignItems: "center"
+            }}>
               {hasMultipleGroups && step.sequence !== undefined && (
                 <Chip
                   label={`Step ${step.sequence + 1}`}
@@ -125,7 +119,7 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
               )}
               {step.membershipType === "direct" && (
                 <Chip
-                  icon={<Group />}
+                  icon={<CippIcons.Group />}
                   label="Direct"
                   color="success"
                   size="small"
@@ -134,7 +128,7 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
               )}
               {step.membershipType === "nested" && (
                 <Chip
-                  icon={<AccountTree />}
+                  icon={<CippIcons.AccountTree />}
                   label="Nested"
                   color="info"
                   size="small"
@@ -143,7 +137,7 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
               )}
               {step.membershipType === "not_member" && (
                 <Chip
-                  icon={<Cancel />}
+                  icon={<CippIcons.Cancel />}
                   label="Not Member"
                   color="error"
                   size="small"
@@ -156,7 +150,9 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
             </Stack>
             {index < sortedPath.length - 1 && (
               <Box sx={{ pl: hasMultipleGroups ? 8 : 4, py: 0.5 }}>
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" sx={{
+                  color: "text.secondary"
+                }}>
                   ↓
                 </Typography>
               </Box>
@@ -177,41 +173,53 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
           </Typography>
           <Divider sx={{ mb: 2 }} />
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="body2" color="text.secondary">
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <Typography variant="body2" sx={{
+                color: "text.secondary"
+              }}>
                 Tenant
               </Typography>
               <Typography variant="body1" sx={{ fontWeight: "medium" }}>
                 {tenantName}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="body2" color="text.secondary">
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <Typography variant="body2" sx={{
+                color: "text.secondary"
+              }}>
                 User
               </Typography>
               <Typography variant="body1" sx={{ fontWeight: "medium" }}>
                 {userDisplayName || userUPN}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="body2" color="text.secondary">
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <Typography variant="body2" sx={{
+                color: "text.secondary"
+              }}>
                 Total Relationships
               </Typography>
               <Typography variant="body1" sx={{ fontWeight: "medium" }}>
                 {summary?.totalRelationships || 0}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="body2" color="text.secondary">
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <Typography variant="body2" sx={{
+                color: "text.secondary"
+              }}>
                 Roles with Access
               </Typography>
               <Typography variant="body1" sx={{ fontWeight: "medium", color: "success.main" }}>
                 {summary?.rolesWithAccess || 0} / {summary?.totalRoles || 15}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Stack direction="row" alignItems="center" spacing={0.5}>
-                <Typography variant="body2" color="text.secondary">
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <Stack direction="row" spacing={0.5} sx={{
+                alignItems: "center"
+              }}>
+                <Typography variant="body2" sx={{
+                  color: "text.secondary"
+                }}>
                   Roles Assigned but No Access
                 </Typography>
                 <Tooltip
@@ -220,7 +228,7 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                   arrow
                 >
                   <IconButton size="small" sx={{ p: 0.25 }}>
-                    <InfoOutlined sx={{ fontSize: 16 }} />
+                    <CippIcons.InfoOutlined sx={{ fontSize: 16 }} />
                   </IconButton>
                 </Tooltip>
               </Stack>
@@ -228,9 +236,13 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                 {summary?.rolesAssignedButNoAccess || 0}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Stack direction="row" alignItems="center" spacing={0.5}>
-                <Typography variant="body2" color="text.secondary">
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <Stack direction="row" spacing={0.5} sx={{
+                alignItems: "center"
+              }}>
+                <Typography variant="body2" sx={{
+                  color: "text.secondary"
+                }}>
                   Roles In Relationship but Not Assigned
                 </Typography>
                 <Tooltip
@@ -239,7 +251,7 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                   arrow
                 >
                   <IconButton size="small" sx={{ p: 0.25 }}>
-                    <InfoOutlined sx={{ fontSize: 16 }} />
+                    <CippIcons.InfoOutlined sx={{ fontSize: 16 }} />
                   </IconButton>
                 </Tooltip>
               </Stack>
@@ -247,9 +259,13 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                 {summary?.rolesInRelationshipButNotAssigned || 0}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Stack direction="row" alignItems="center" spacing={0.5}>
-                <Typography variant="body2" color="text.secondary">
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <Stack direction="row" spacing={0.5} sx={{
+                alignItems: "center"
+              }}>
+                <Typography variant="body2" sx={{
+                  color: "text.secondary"
+                }}>
                   Roles Not In Any Relationship
                 </Typography>
                 <Tooltip
@@ -258,7 +274,7 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                   arrow
                 >
                   <IconButton size="small" sx={{ p: 0.25 }}>
-                    <InfoOutlined sx={{ fontSize: 16 }} />
+                    <CippIcons.InfoOutlined sx={{ fontSize: 16 }} />
                   </IconButton>
                 </Tooltip>
               </Stack>
@@ -274,7 +290,7 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            <Security sx={{ verticalAlign: "middle", mr: 1 }} />
+            <CippIcons.Security sx={{ verticalAlign: "middle", mr: 1 }} />
             GDAP Roles Access
           </Typography>
           <Divider sx={{ mb: 2 }} />
@@ -287,7 +303,7 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                   expanded={expandedRoles[role.roleId] || false}
                   onChange={() => handleRoleExpand(role.roleId)}
                 >
-                  <AccordionSummary expandIcon={<ExpandMore />}>
+                  <AccordionSummary expandIcon={<CippIcons.ExpandMore />}>
                     <Box sx={{ display: "flex", alignItems: "center", width: "100%", gap: 2 }}>
                       {getRoleStatusChip(role)}
                       <Box sx={{ flex: 1 }}>
@@ -295,7 +311,9 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                           {role.roleName}
                         </Typography>
                         {role.roleDescription && (
-                          <Typography variant="caption" color="text.secondary">
+                          <Typography variant="caption" sx={{
+                            color: "text.secondary"
+                          }}>
                             {role.roleDescription}
                           </Typography>
                         )}
@@ -306,7 +324,12 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                     <Stack spacing={2}>
                       {role.isUserHasAccess && role.accessPaths && role.accessPaths.length > 0 ? (
                         <>
-                          <Typography variant="subtitle2" color="success.main" sx={{ mb: 2 }}>
+                          <Typography
+                            variant="subtitle2"
+                            sx={{
+                              color: "success.main",
+                              mb: 2
+                            }}>
                             Access Paths ({role.accessPaths.length}):
                           </Typography>
                           {role.accessPaths.map((path, pathIndex) => (
@@ -374,7 +397,9 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
 
                       {role.relationshipsWithRole && role.relationshipsWithRole.length > 0 && (
                         <Box sx={{ mt: 2 }}>
-                          <Typography variant="caption" color="text.secondary">
+                          <Typography variant="caption" sx={{
+                            color: "text.secondary"
+                          }}>
                             All relationships with this role: {role.relationshipsWithRole.length}
                           </Typography>
                         </Box>
@@ -395,7 +420,7 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              <AccountTree sx={{ verticalAlign: "middle", mr: 1 }} />
+              <CippIcons.AccountTree sx={{ verticalAlign: "middle", mr: 1 }} />
               GDAP Relationships
             </Typography>
             <Divider sx={{ mb: 2 }} />
@@ -406,7 +431,7 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                   expanded={expandedRelationships[relationship.relationshipId] || false}
                   onChange={() => handleRelationshipExpand(relationship.relationshipId)}
                 >
-                  <AccordionSummary expandIcon={<ExpandMore />}>
+                  <AccordionSummary expandIcon={<CippIcons.ExpandMore />}>
                     <Box sx={{ display: "flex", alignItems: "center", width: "100%", gap: 2 }}>
                       <Chip
                         label={relationship.relationshipStatus}
@@ -416,7 +441,12 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                       <Typography variant="subtitle1" sx={{ fontWeight: "medium" }}>
                         {relationship.relationshipName}
                       </Typography>
-                      <Typography variant="caption" color="text.secondary" sx={{ ml: "auto" }}>
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: "text.secondary",
+                          ml: "auto"
+                        }}>
                         {relationship.groups?.length || 0} groups
                       </Typography>
                     </Box>
@@ -424,7 +454,9 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                   <AccordionDetails>
                     <Stack spacing={2}>
                       <Box>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" sx={{
+                          color: "text.secondary"
+                        }}>
                           Customer Tenant: {relationship.customerTenantName || relationship.customerTenantId}
                         </Typography>
                       </Box>
@@ -437,7 +469,14 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                             const groupRole = roles?.find((r) =>
                               r.relationshipsWithRole?.some((rel) => rel.groupId === group.groupId)
                             );
-                            const roleName = groupRole?.roleName || (group.roles?.[0]?.displayName || "Role");
+                            const firstRoleDef = group.roles?.[0];
+                            const roleName =
+                              groupRole?.roleName ||
+                              firstRoleDef?.displayName ||
+                              (firstRoleDef?.roleDefinitionId
+                                ? getCippRoleTranslation(firstRoleDef.roleDefinitionId)
+                                : null) ||
+                              "Role";
 
                             return (
                               <Box key={groupIndex} sx={{ mb: 3 }}>
@@ -455,16 +494,30 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
                                   <Box sx={{ mt: 1, pl: 2 }}>
                                     <Typography
                                       variant="caption"
-                                      color="text.secondary"
-                                      sx={{ display: "block", mb: 0.5 }}
-                                    >
+                                      sx={{
+                                        color: "text.secondary",
+                                        display: "block",
+                                        mb: 0.5
+                                      }}>
                                       Additional Roles:
                                     </Typography>
-                                    <Stack direction="row" spacing={0.5} flexWrap="wrap" gap={0.5}>
+                                    <Stack
+                                      useFlexGap
+                                      direction="row"
+                                      sx={{
+                                        flexWrap: "wrap",
+                                        gap: 0.5
+                                      }}>
                                       {group.roles.slice(1).map((role, roleIndex) => (
                                         <Chip
                                           key={roleIndex}
-                                          label={role.displayName || role.roleDefinitionId}
+                                          label={
+                                            role.displayName ||
+                                            (role.roleDefinitionId
+                                              ? getCippRoleTranslation(role.roleDefinitionId)
+                                              : null) ||
+                                            role.roleDefinitionId
+                                          }
                                           size="small"
                                           variant="outlined"
                                         />
@@ -492,7 +545,7 @@ export const CippGDAPTraceResults = ({ data, isLoading, error }) => {
       <Card sx={{ mt: 3 }}>
         <CardContent>
           <Accordion>
-            <AccordionSummary expandIcon={<ExpandMore />}>
+            <AccordionSummary expandIcon={<CippIcons.ExpandMore />}>
               <Typography variant="subtitle2">View Raw JSON</Typography>
             </AccordionSummary>
             <AccordionDetails>
